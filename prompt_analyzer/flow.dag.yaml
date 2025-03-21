@@ -4,9 +4,7 @@ inputs:
     default: ""
   question:
     type: string
-    default: The dog was given a eutanasa injection due to their severed leg bleding
-      profusely from deep lacarations to the lower extremities, exposing tisssue
-      and nerve.
+    default: hula como estus
   profile:
     type: string
     default: ""
@@ -73,3 +71,4 @@ nodes:
   inputs:
     question: ${inputs.question}
     profile: ${inputs.profile}
+    conn: DeepSeek-V3

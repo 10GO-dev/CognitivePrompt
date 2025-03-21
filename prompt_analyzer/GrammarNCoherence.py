@@ -1,6 +1,8 @@
 
 from fastapi import params
+from openai import api_key
 from promptflow.core import tool
+from promptflow.connections import CustomConnection
 from azure.ai.inference import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage, UserMessage
 from azure.core.credentials import AzureKeyCredential
@@ -32,13 +34,13 @@ def load_model_profile(file_path: str, profile_name: str) -> dict:
 
 
 @tool
-def grammar_n_coherence(question: str, profile: str) -> dict:
+def grammar_n_coherence(question: str, profile: str, conn: CustomConnection) -> dict:
 
     model_profile = load_model_profile('.\models_profile.yaml', "grammar_n_coherence")
     print(model_profile['parameters']['max_tokens'])
     model_params = ModelParams()
     model_params.load_from_dict(model_profile['parameters'])
-    model_config = ModelConfig(model_params)
+    model_config = ModelConfig(model_params,api_key=conn.secrets.get('key1'), endpoint=conn.configs.get('api_url'))
 
     client = ChatCompletionsClient(
     endpoint=model_config.get_endpoint(),

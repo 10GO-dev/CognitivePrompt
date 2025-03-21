@@ -21,21 +21,6 @@ class ModelParams:
         self.top_p = params.get("top_p", self.top_p)
         self.presence_penalty = params.get("presence_penalty", self.presence_penalty)
         self.frequency_penalty = params.get("frequency_penalty", self.frequency_penalty)
-
-    def get_model_max_tokens(self):
-        return self.max_tokens
-    
-    def get_model_temperature(self):
-        return self.temperature
-    
-    def get_model_top_p(self):
-        return self.top_p
-    
-    def get_model_presence_penalty(self):
-        return self.presence_penalty
-    
-    def get_model_frequency_penalty(self):
-        return self.frequency_penalty
         
 
 class ModelConfig:
@@ -52,7 +37,7 @@ class ModelConfig:
             raise ValueError("AZURE_AI_MODELS_API_KEY is not set")
 
     def get_endpoint(self):
-        return self.endpoint+"models/"
+        return self.endpoint
     
     def get_model_name(self):
         return self.model_name
