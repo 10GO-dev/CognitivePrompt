@@ -1,0 +1,44 @@
+# English
+
+# Sensitivity Level Mapping:
+# - disable: -1
+# - low_sensitivity: 6
+# - medium_sensitivity: 4
+# - high_sensitivity: 2
+
+# Español
+
+# Mapeo de niveles de sensibilidad:
+# - disable: -1
+# - low_sensitivity: 6
+# - medium_sensitivity: 4
+# - high_sensitivity: 2
+
+moderation_profiles:
+  medicine:
+    category_filters:
+      hate: "low_sensitivity"       # Moderation for offensive language: low sensitivity (6)
+      self_harm: "disable"           # Moderation disabled for self-harm content (-1)
+      sexual: "disable"              # Moderation disabled for sexual content (-1)
+      violence: "disable"            # Moderation disabled for violent content (-1)
+
+  computer_science:
+    category_filters:
+      hate: "medium_sensitivity"     # Moderation for offensive language: medium sensitivity (4)
+      self_harm: "low_sensitivity"     # Low sensitivity for self-harm topics (6)
+      sexual: "disable"              # Moderation disabled for sexual content (-1)
+      violence: "low_sensitivity"     # Low sensitivity for violent content (6)
+
+  law:
+    category_filters:
+      hate: "medium_sensitivity"     # Moderation for offensive language: medium sensitivity (4)
+      self_harm: "disable"           # Moderation disabled for self-harm content (-1)
+      sexual: "disable"              # Moderation disabled for sexual content (-1)
+      violence: "medium_sensitivity"   # Moderation for violent content: medium sensitivity (4)
+
+  arts:
+    category_filters:
+      hate: "low_sensitivity"       # Low sensitivity for offensive language (6)
+      self_harm: "low_sensitivity"    # Low sensitivity for self-harm topics (6)
+      sexual: "low_sensitivity"       # Low sensitivity for sexual content (6)
+      violence: "disable"            # Moderation disabled for violent content (-1)
