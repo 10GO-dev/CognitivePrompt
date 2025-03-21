@@ -40,7 +40,7 @@ def grammar_n_coherence(question: str, profile: str, conn: CustomConnection) -> 
     print(model_profile['parameters']['max_tokens'])
     model_params = ModelParams()
     model_params.load_from_dict(model_profile['parameters'])
-    model_config = ModelConfig(model_params,api_key=conn.secrets.get('key1'), endpoint=conn.configs.get('api_url'))
+    model_config = ModelConfig(model_params,api_key=conn.secrets.get('api_key'), endpoint=conn.configs.get('api_url'))
 
     client = ChatCompletionsClient(
     endpoint=model_config.get_endpoint(),
