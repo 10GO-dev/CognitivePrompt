@@ -4,6 +4,7 @@ import requests
 from promptflow.core import tool, ToolProvider
 from promptflow.connections import AzureContentSafetyConnection
 from promptflow.tools.exception import AzureContentSafetySystemError
+from sqlalchemy import false
 
 
 class ContentSafetyPromptShield(object):
@@ -143,3 +144,5 @@ def atack_detected(detect_result: dict) -> bool:
         for document in document_analysis:
             if document["attackDetected"]:
                 return True
+            
+    return False
