@@ -1,51 +1,73 @@
-# Hate and Fairness Severity Levels
+# AI Prompt Processor
 
-| Severity Level | Description | Example Text |
-|----------------|-------------|---------------|
-| 0 | General terms appropriate for all audiences, including children | I hate cats. |
-| 1 | Context-dependent terms (e.g., news, education) | Black people should not be killed by police. |
-| 2 | Positive characterization or protection of identity groups | I hate you. |
-| 3 | Prejudiced or stereotypical views | I don't like [identity group] because they're aggressive. |
-| 4 | Direct insults or slurs targeting identity groups | All [identity group] are ugly. |
-| 5 | Dehumanization, violence, or denial of events | The [real world event] is a fraud. |
-| 6 | Hate speech inciting action against identity groups | Send [identity group] back to the gas chambers. |
-| 7 | Hate crime preparation or glorification | Millions of [identity group] were wiped out because they were inferior. |
+This project is designed to analyze and process AI prompts using various tools and configurations. It includes features like content safety analysis, grammar and coherence checks, and moderation profiles.
 
-# Sexual Severity Levels
+## Features
 
-| Severity Level | Description | Example Text |
-|----------------|-------------|---------------|
-| 0 | Harmless mentions of sexual terms | The sports bra was too tight. |
-| 1 | Context-dependent educational content | Fewer young adults are having sex. |
-| 2 | Non-graphic fictional/real experiences | My husband and I introduced a vibrator. |
-| 3 | Mildly graphic personal experiences | We made out, and he started to feel me up. |
-| 4 | Fantasies, sex industry ads, or soft-core mentions | I got into BDSM because friends were into it. |
-| 5 | Erotic experiences with consent | We both climaxed at the same time. |
-| 6 | Solicitation, violent abuse, or non-consensual acts | I love forced sex, it's so much hotter. |
-| 7 | Illegal/explicit content (e.g., child abuse) | I make money producing child pornography. |
+- **Content Safety Analysis**: Detects harmful or unsafe content in prompts and documents.
+- **Grammar and Coherence Checks**: Ensures the input text is grammatically correct and coherent.
+- **Moderation Profiles**: Customizable sensitivity levels for different categories like hate, violence, and self-harm.
 
-# Violence Severity Levels
+## Project Structure
 
-| Severity Level | Description | Example Text |
-|----------------|-------------|---------------|
-| 0 | Harmless mentions of non-violent actions | Best long-range soakers for toddlers. |
-| 1 | Context-dependent violent terms (e.g., news, education) | Carnivores kill one another during fights. |
-| 2 | Fictional violence without glorification | Physical punishment corrects bad behavior. |
-| 3 | Opinions endorsing some violence | Some people just need to be slapped. |
-| 4 | Victim-blaming or medium gore | Victims of abuse deserve to be hit. |
-| 5 | Direct instructions to harm others | Go kill any stranger with a silencer gun. |
-| 6 | Terrorist propaganda or mass killings | We must kill them all. God wills it. |
-| 7 | Glorification of extreme violence | Let's threaten to explode the hospital. |
+- `prompt_analyzer/`: Contains the core tools and configurations for analyzing prompts.
+- `requirements.txt`: Lists the dependencies required for the project.
+- `pyproject.toml`: Configuration file for the project.
+- `moderation_profiles.yaml`: Defines moderation profiles for different domains.
+- `models_profile.yaml`: Contains model configurations for grammar and coherence checks.
 
-# Self-Harm Severity Levels
+## Configuration
 
-| Severity Level | Description | Example Text |
-|----------------|-------------|---------------|
-| 0 | Harmless mentions of self-harm terms | Don't keep killing yourself over this project. |
-| 1 | Context-dependent educational content | Binging and purging may be a warning sign. |
-| 2 | Fictional/real experiences with low gore | Oedipus stabbed his eyes in despair. |
-| 3 | Personal struggles with self-harm | I'm struggling with thoughts of self-harm. |
-| 4 | Mocking victims or medium gore | It's hilarious when [identity group] kill themselves. |
-| 5 | Instructions to self-harm | Go kill yourself, you're worthless. |
-| 6 | Detailed suicide guides | Here's a quick guide to asphyxia suicide. |
-| 7 | Glorification of suicide | Get a shotgun and blow your brains out.
+### Using `uv` for Dependency Management
+
+This project uses [uv](https://github.com/uv-py/uv) for Python project and dependency management. To set up the project using `uv`, follow these steps:
+
+1. Install `uv`:
+   ```bash
+   pip install uv
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd d:\Programing\ai_prompt_procesor
+   ```
+
+3. Install dependencies using `uv`:
+   ```bash
+   uv install
+   ```
+
+### Using `requirements.txt`
+
+If you prefer not to use `uv`, you can install the dependencies directly from the `requirements.txt` file:
+
+1. Navigate to the project directory:
+   ```bash
+   cd d:\Programing\ai_prompt_procesor
+   ```
+
+2. Install the dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Environment Variables
+
+The project requires certain environment variables to be set for Azure services. Create a `.env` file in the project root and add the following variables:
+
+```
+AZURE_AI_SERVICE_ENDPOINT=<your_azure_endpoint>
+AZURE_AI_MODEL_NAME=<your_model_name>
+AZURE_AI_SERVICE_API_KEY=<your_api_key>
+```
+
+Replace `<your_azure_endpoint>`, `<your_model_name>`, and `<your_api_key>` with your Azure service details.
+
+## Running the Project
+
+1. Ensure all dependencies are installed and environment variables are configured.
+2. Run the desired tools or scripts from the `prompt_analyzer` directory.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
