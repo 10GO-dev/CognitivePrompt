@@ -1,4 +1,4 @@
-# English
+
 
 # Sensitivity Level Mapping:
 # - disable: -1
@@ -6,16 +6,9 @@
 # - medium_sensitivity: 4
 # - high_sensitivity: 2
 
-# Español
-
-# Mapeo de niveles de sensibilidad:
-# - disable: -1
-# - low_sensitivity: 6
-# - medium_sensitivity: 4
-# - high_sensitivity: 2
-
 moderation_profiles:
   medicine:
+    pii_entities: ['PhoneNumber','Address','Email','IPAddress','USSocialSecurityNumber']
     category_filters:
       hate: "low_sensitivity"       # Moderation for offensive language: low sensitivity (6)
       self_harm: "disable"           # Moderation disabled for self-harm content (-1)
@@ -23,6 +16,7 @@ moderation_profiles:
       violence: "disable"            # Moderation disabled for violent content (-1)
 
   computer_science:
+    pii_entities: []
     category_filters:
       hate: "medium_sensitivity"     # Moderation for offensive language: medium sensitivity (4)
       self_harm: "low_sensitivity"     # Low sensitivity for self-harm topics (6)
@@ -31,6 +25,7 @@ moderation_profiles:
 
   law:
     category_filters:
+      pii_entities: ['PhoneNumber','Address','Email','IPAddress']
       hate: "medium_sensitivity"     # Moderation for offensive language: medium sensitivity (4)
       self_harm: "disable"           # Moderation disabled for self-harm content (-1)
       sexual: "disable"              # Moderation disabled for sexual content (-1)
@@ -38,6 +33,7 @@ moderation_profiles:
 
   arts:
     category_filters:
+      pii_entities: ['PhoneNumber','Address','Email','IPAddress']
       hate: "low_sensitivity"       # Low sensitivity for offensive language (6)
       self_harm: "low_sensitivity"    # Low sensitivity for self-harm topics (6)
       sexual: "low_sensitivity"       # Low sensitivity for sexual content (6)

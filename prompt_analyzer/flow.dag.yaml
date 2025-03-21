@@ -4,13 +4,21 @@ inputs:
     default: ""
   question:
     type: string
-    default: |-
-      402-1933423-8
-
-      829-389-3232
+    default: >-
+      Hello, my name is Mateo Gomez. I lost my Credit card on August 17th, and I
+      would like to request its cancellation. The last purchase I made was of a
+      Chicken parmigiana dish at Contoso Restaurant, located near the Hollywood
+      Museum, for $40. Below is my personal information for validation:
+             Profession: Accountant
+             Social Security number is 123-45-6788
+             Date of birth: 9-9-1989
+             Phone number: 949-555-0110
+             Personal address: 1234 Hollywood Boulevard Los Angeles CA
+             Linked email account: mateo@contosorestaurant.com
+             Swift code: CHASUS33XXX
   profile:
     type: string
-    default: medicine
+    default: computer_science
   document:
     type: list
     default: []
@@ -22,7 +30,7 @@ outputs:
     type: string
     reference: ${inputs.profile}
 nodes:
-- name: FilterConfig
+- name: FiltersConfig
   type: python
   source:
     type: code
@@ -30,18 +38,18 @@ nodes:
   inputs:
     question: ${inputs.question}
     profile: ${inputs.profile}
-- name: PromptHarmCategoriesFIlter
+- name: TextModeration
   type: python
   source:
     type: package
     tool: promptflow.tools.azure_content_safety.analyze_text
   inputs:
-    connection: ai-ddpm0001ai1418328216884502
+    connection: diego-m8i2ku8a-eastus2
     text: ${inputs.question}
-    hate_category: ${FilterConfig.output.hate}
-    self_harm_category: ${FilterConfig.output.self_harm}
-    sexual_category: ${FilterConfig.output.sexual}
-    violence_category: ${FilterConfig.output.violence}
+    hate_category: ${FiltersConfig.output.hate}
+    self_harm_category: ${FiltersConfig.output.self_harm}
+    sexual_category: ${FiltersConfig.output.sexual}
+    violence_category: ${FiltersConfig.output.violence}
   activate:
     when: ${prompt_shield.output.attackDetected}
     is: false
@@ -51,7 +59,7 @@ nodes:
     type: code
     path: prompt_shield.py
   inputs:
-    connection: ai-ddpm0001ai1418328216884502
+    connection: diego-m8i2ku8a-eastus2
     user_prompt: ${inputs.question}
     documents: ${inputs.document}
 - name: GrammarNCoherence
@@ -64,7 +72,7 @@ nodes:
     profile: ${inputs.profile}
     conn: DeepSeek-V3
   activate:
-    when: ${PromptHarmCategoriesFIlter.output.suggested_action}
+    when: ${TextModeration.output.suggested_action}
     is: Accept
 - name: PII_recognition
   type: python
@@ -72,5 +80,9 @@ nodes:
     type: code
     path: PII_recognition.py
   inputs:
-    conn: ai-ddpm0001ai1418328216884502
+    conn: diego-m8i2ku8a-eastus2
     user_input: ${inputs.question}
+    categoryList: ${FiltersConfig.output.pii_entities}
+  activate:
+    when: ${FiltersConfig.output.pii_enabled}
+    is: true
