@@ -18,6 +18,8 @@ This project is designed to analyze and process AI prompts using various tools a
 
 ## Configuration
 
+We recomend to use python 3.12
+
 ### Using `uv` for Dependency Management
 
 This project uses [uv](https://github.com/uv-py/uv) for Python project and dependency management. To set up the project using `uv`, follow these steps:
@@ -48,7 +50,7 @@ If you prefer not to use `uv`, you can install the dependencies directly from th
 
 2. Install the dependencies:
    ```bash
-   pip install -r requirements.txt
+   pip install -r .requirements.txt
    ```
 
 ### Environment Variables
