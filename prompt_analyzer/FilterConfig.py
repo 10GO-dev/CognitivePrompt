@@ -16,7 +16,7 @@ DEFAULT_PROFILE = {
     "sexual": "medium_sensitivity",
     "violence": "medium_sensitivity",
     "pii_entities": ['PhoneNumber','Address','Email','IPAddress'],
-    "pii_enbled": "True"
+    "pii_enabled": "True"
 }
 
 # Load moderation profiles YAML file
@@ -30,7 +30,9 @@ def filterConfig(question: str, profile: str) -> dict:
     moderation_profiles = load_moderation_profiles(MODERATION_PROFILES_PATH)
     profile = profile.lower()
     if len(moderation_profiles)> 0 and profile in moderation_profiles.keys():
-        profile =  moderation_profiles[profile].get("category_filters")
+        loaded_profile = moderation_profiles[profile]
+        profile =  loaded_profile.get("category_filters")
+        profile["pii_entities"] = loaded_profile.get("pii_entities")
         profile["pii_enabled"] = profile.get("pii_entities") is not None and len(profile.get("pii_entities")) > 0
         return profile
     return DEFAULT_PROFILE

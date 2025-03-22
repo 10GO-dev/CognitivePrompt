@@ -10,4 +10,5 @@ dependencies = [
     "promptflow-azure-ai-language>=0.1.14",
     "promptflow-azure>=1.17.2",
     "llmlingua-promptflow>=0.0.1",
+    "torch>=2.6.0",
 ]

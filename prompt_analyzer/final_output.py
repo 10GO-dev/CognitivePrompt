@@ -1,6 +1,6 @@
+
 import json
 import yaml
-import re
 from promptflow.core import tool
 from promptflow.connections import CustomConnection
 from azure.ai.inference import ChatCompletionsClient
@@ -8,6 +8,10 @@ from azure.ai.inference.models import SystemMessage, UserMessage
 from azure.core.credentials import AzureKeyCredential
 
 from AzureCustomModel import ModelConfig, ModelParams
+
+# The inputs section will change based on the arguments of the tool function, after you save the code
+# Adding type to arguments and return value will help the system show the types properly
+# Please update the function name/signature per need
 
 def load_model_profile(file_path: str, profile_name: str) -> dict:
     """
@@ -32,9 +36,16 @@ def load_model_profile(file_path: str, profile_name: str) -> dict:
 
 
 @tool
-def grammar_n_coherence(question: str, system_prompt: str , conn: CustomConnection) -> dict:
+def final_output(filtered_prompt: str, optimization_prompt: str, filters_triggered: bool, conn: CustomConnection) -> str:
 
-    model_profile = load_model_profile('.\models_profile.yaml', "grammar_n_coherence")
+    m_profile_name = "prompt_optimization"
+    system_prompt = optimization_prompt
+    if filters_triggered:
+        m_profile_name = "filter_context_evaluation"
+        system_prompt = filtered_prompt
+
+
+    model_profile = load_model_profile('.\models_profile.yaml', m_profile_name)
     model_params = ModelParams()
     model_params.load_from_dict(model_profile['parameters'])
     if(conn):
@@ -49,8 +60,7 @@ def grammar_n_coherence(question: str, system_prompt: str , conn: CustomConnecti
 
     response = client.complete(
         messages=[
-            SystemMessage(content=system_prompt),
-            UserMessage(content=question),
+            UserMessage(content=system_prompt),
         ],
         max_tokens=model_config.get_model_max_tokens(),
         temperature=model_config.get_model_temperature(),
@@ -61,7 +71,6 @@ def grammar_n_coherence(question: str, system_prompt: str , conn: CustomConnecti
     )
 
     model_res = response.choices[0].message.content
-    model_res = string_to_json(model_res)
     print(model_res)
     return model_res
 

@@ -18,7 +18,7 @@ inputs:
              Swift code: CHASUS33XXX
   profile:
     type: string
-    default: computer_science
+    default: medicine
   document:
     type: list
     default: []
@@ -30,6 +30,15 @@ outputs:
     type: string
     reference: ${inputs.profile}
 nodes:
+- name: prompt_shield
+  type: python
+  source:
+    type: code
+    path: prompt_shield.py
+  inputs:
+    connection: diego-m8i2ku8a-eastus2
+    user_prompt: ${inputs.question}
+    documents: ${inputs.document}
 - name: FiltersConfig
   type: python
   source:
@@ -38,6 +47,9 @@ nodes:
   inputs:
     question: ${inputs.question}
     profile: ${inputs.profile}
+  activate:
+    when: ${prompt_shield.output.attackDetected}
+    is: false
 - name: TextModeration
   type: python
   source:
@@ -50,18 +62,12 @@ nodes:
     self_harm_category: ${FiltersConfig.output.self_harm}
     sexual_category: ${FiltersConfig.output.sexual}
     violence_category: ${FiltersConfig.output.violence}
-  activate:
-    when: ${prompt_shield.output.attackDetected}
-    is: false
-- name: prompt_shield
-  type: python
+- name: Grammar_prompt
+  type: prompt
   source:
     type: code
-    path: prompt_shield.py
-  inputs:
-    connection: diego-m8i2ku8a-eastus2
-    user_prompt: ${inputs.question}
-    documents: ${inputs.document}
+    path: Grammar_prompt.jinja2
+  inputs: {}
 - name: GrammarNCoherence
   type: python
   source:
@@ -69,8 +75,8 @@ nodes:
     path: GrammarNCoherence.py
   inputs:
     question: ${inputs.question}
-    profile: ${inputs.profile}
     conn: DeepSeek-V3
+    system_prompt: ${Grammar_prompt.output}
   activate:
     when: ${TextModeration.output.suggested_action}
     is: Accept
@@ -86,3 +92,46 @@ nodes:
   activate:
     when: ${FiltersConfig.output.pii_enabled}
     is: true
+- name: context_builder
+  type: python
+  source:
+    type: code
+    path: context_builder.py
+  inputs:
+    prompt_shield: ${prompt_shield.output}
+    profile: ${inputs.profile}
+    text_moderation: ${TextModeration.output}
+    pii_recognition: ${PII_recognition.output}
+    grammar_n_coherence: ${GrammarNCoherence.output}
+    prompt: ${inputs.question}
+    chat_history: ${inputs.chat_history}
+- name: filter_evalutation_prompt
+  type: prompt
+  source:
+    type: code
+    path: filter_evaluation.jinja2
+  inputs:
+    ai_prompt: ${context_builder.output.ai_prompt}
+  activate:
+    when: ${context_builder.output.triggered_filter}
+    is: true
+- name: prompt_optimize
+  type: prompt
+  source:
+    type: code
+    path: prompt_optimize.jinja2
+  inputs:
+    ai_context: ${context_builder.output.ai_prompt}
+  activate:
+    when: ${context_builder.output.triggered_filter}
+    is: false
+- name: final_output
+  type: python
+  source:
+    type: code
+    path: final_output.py
+  inputs:
+    filters_triggered: ${context_builder.output.triggered_filter}
+    optimization_prompt: ${prompt_optimize.output}
+    filtered_prompt: ${filter_evalutation_prompt.output}
+    conn: DeepSeek-V3

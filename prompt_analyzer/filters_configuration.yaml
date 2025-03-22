@@ -24,16 +24,16 @@ moderation_profiles:
       violence: "low_sensitivity"     # Low sensitivity for violent content (6)
 
   law:
+    pii_entities: ['PhoneNumber','Address','Email','IPAddress']
     category_filters:
-      pii_entities: ['PhoneNumber','Address','Email','IPAddress']
       hate: "medium_sensitivity"     # Moderation for offensive language: medium sensitivity (4)
       self_harm: "disable"           # Moderation disabled for self-harm content (-1)
       sexual: "disable"              # Moderation disabled for sexual content (-1)
       violence: "medium_sensitivity"   # Moderation for violent content: medium sensitivity (4)
 
   arts:
+    pii_entities: ['PhoneNumber','Address','Email','IPAddress']
     category_filters:
-      pii_entities: ['PhoneNumber','Address','Email','IPAddress']
       hate: "low_sensitivity"       # Low sensitivity for offensive language (6)
       self_harm: "low_sensitivity"    # Low sensitivity for self-harm topics (6)
       sexual: "low_sensitivity"       # Low sensitivity for sexual content (6)
